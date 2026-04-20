@@ -1,0 +1,72 @@
+Metadata-Version: 2.4
+Name: repo-intel
+Version: 0.1.0
+Summary: Production-oriented MVP for repository intelligence
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi>=0.115.0
+Requires-Dist: uvicorn>=0.30.0
+Requires-Dist: sqlalchemy>=2.0.0
+Requires-Dist: alembic>=1.13.0
+Requires-Dist: psycopg[binary]>=3.1.0
+Requires-Dist: pydantic>=2.7.0
+Requires-Dist: pydantic-settings>=2.3.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.2.0; extra == "dev"
+Requires-Dist: httpx>=0.27.0; extra == "dev"
+
+# repo-intel
+
+`repo-intel` is a production-oriented MVP for repository intelligence.
+This step bootstraps deterministic scan orchestration and data modeling first, with AI reasoning interfaces stubbed for later integration.
+
+## What is included
+
+- FastAPI application with:
+  - `GET /health`
+  - `POST /scans`
+  - `GET /scans/{scan_id}`
+- SQLAlchemy 2.x models and Alembic migration setup
+- Repository and service layer abstractions
+- Worker stubs for scan orchestration phases
+- AI stubs for future Vertex-backed reasoning
+- Pytest coverage for API, models, and service behavior
+
+## Requirements
+
+- Python 3.11+
+- PostgreSQL
+
+## Environment variables
+
+- `REPO_INTEL_DB_URL` (optional): SQLAlchemy DB URL, defaults to `postgresql+psycopg://postgres:postgres@localhost:5432/repo_intel`
+- `REPO_INTEL_APP_ENV` (optional, default `dev`): runtime environment
+- `REPO_INTEL_LOG_LEVEL` (optional, default `INFO`): logging level
+
+## Local setup
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .[dev]
+```
+
+## Run migrations
+
+```bash
+export REPO_INTEL_DB_URL='postgresql+psycopg://user:pass@localhost:5432/repo_intel'
+alembic upgrade head
+```
+
+## Start the API
+
+```bash
+export REPO_INTEL_DB_URL='postgresql+psycopg://user:pass@localhost:5432/repo_intel'
+uvicorn repo_intel.main:app --reload
+```
+
+## Run tests
+
+```bash
+pytest
+```
